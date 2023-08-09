@@ -25,3 +25,26 @@ io.on('connection', (socket) => {
 server.listen(8080, () => {
     console.log('listening on *:8080');
 });
+
+// let players = {};
+
+// io.on('connection', socket => {
+//   players[socket.id] = {
+//     x: 400,
+//     y: 300
+//   };
+
+//   socket.emit('currentPlayers', players);
+//   socket.broadcast.emit('newPlayer', players[socket.id]);
+
+//   socket.on('disconnect', () => {
+//     delete players[socket.id];
+//     io.emit('disconnect', socket.id);
+//   });
+
+//   socket.on('playerMovement', (movementData) => {
+//     players[socket.id].x = movementData.x;
+//     players[socket.id].y = movementData.y;
+//     socket.broadcast.emit('playerMoved', players[socket.id]);
+//   });
+// });
