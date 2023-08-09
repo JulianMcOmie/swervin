@@ -32,7 +32,6 @@ class MainScene extends Phaser.Scene {
 
         // When a new player connects
         this.socket.on('newPlayer', (playerData) => {
-            console.log("newPlayer");
             this.addOtherPlayer(playerData.Id, playerData.x, playerData.y);
         });
         

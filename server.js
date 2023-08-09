@@ -7,16 +7,13 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
+let players = {};
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 })
-
-// io.on('connection', (socket) => {
-
-// });
 
 io.on('connection', (socket) => {
     console.log('A user connected');
@@ -49,5 +46,4 @@ server.listen(8080, () => {
     console.log('listening on *:8080');
 });
 
-let players = {};
 
