@@ -4,7 +4,7 @@ class MainScene extends Phaser.Scene {
     }
 
     create() {
-        // Add a text to toggle fullscreen
+
         var fullScreenText = this.add.text(10, 10, 'Go Fullscreen', { fill: '#fff' });
         fullScreenText.setInteractive();
         
@@ -16,7 +16,6 @@ class MainScene extends Phaser.Scene {
             }
         }, this);
 
-        // Alternatively, you can also use a key press to toggle fullscreen
         var key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         key.on('down', function() {
             if (this.scale.isFullscreen) {
@@ -55,15 +54,13 @@ class MainScene extends Phaser.Scene {
 
         let speed = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
 
-        let forceMagnitude = 0.0019; // Replace with the magnitude of the force you want to apply
+        let forceMagnitude = 0.0019;
         let force = { x: velocity.x * forceMagnitude, y: velocity.y * forceMagnitude };
     
-        //this.circle.velocity = 5;
         this.matter.body.applyForce(this.circle, this.circle.position, force);
 
         this.graphics.fillStyle(0x0000ff);
         this.graphics.fillCircle(this.circle.position.x, this.circle.position.y, 30);
-    
     }
     
 }
