@@ -27,18 +27,18 @@ io.on('connection', (socket) => {
     };
 
     socket.emit('currentPlayers', players);
-    socket.broadcast.emit('newPlayer', players[socket.id]);
+    socket.broadcast.emit('newPlayer', {Id: socket.id, x: players[socket.id].x, y: players[socket.id].y});
 
     socket.on('playerMovement', (movementData) => {
         players[socket.id].x = movementData.x;
         players[socket.id].y = movementData.y;
-        //console.log("hello");
         socket.broadcast.emit('playerMoved', {Id: socket.id, x: players[socket.id].x, y: players[socket.id].y});
     });
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
         delete players[socket.id];
+        socket.emit("userDisconnect", socket.id);
         socket.disconnect();
     });
 

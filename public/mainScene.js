@@ -32,7 +32,8 @@ class MainScene extends Phaser.Scene {
 
         // When a new player connects
         this.socket.on('newPlayer', (playerData) => {
-            this.addOtherPlayer(playerData.x, playerData.y);
+            console.log("newPlayer");
+            this.addOtherPlayer(playerData.Id, playerData.x, playerData.y);
         });
         
         // When a player moves
@@ -45,8 +46,9 @@ class MainScene extends Phaser.Scene {
         });
         
         // When a player disconnects
-        this.socket.on('disconnect', (playerId) => {
+        this.socket.on('userDisconnect', (playerId) => {
             // You'll need to find this player and remove them from your game.
+            console.log("disconnected");
             this.removePlayer(playerId);
         });
 
@@ -98,7 +100,6 @@ class MainScene extends Phaser.Scene {
             let force = { x: velocity.x * forceMagnitude, y: velocity.y * forceMagnitude };
         
             this.matter.body.applyForce(currentPlayer, currentPlayer.position, force);
-            //console.log("moving player to " + currentPlayer.position.x + ", " + currentPlayer.position.y);
             this.socket.emit("playerMovement", {x: currentPlayer.position.x, y: currentPlayer.position.y});
         }
 
@@ -113,7 +114,6 @@ class MainScene extends Phaser.Scene {
     }
     
     movePlayer(playerId, x, y) {
-        //console.log(playerId);
         if (this.players[playerId]) {
           this.players[playerId].position.x = x;
           this.players[playerId].position.y = y;
