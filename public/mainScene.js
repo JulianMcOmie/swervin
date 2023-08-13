@@ -3,6 +3,10 @@ class MainScene extends Phaser.Scene {
         super({ key: 'MainScene' });
     }
 
+    init(data) {
+        this.chosenColor = data.color;
+    }
+
     create() {
         this.socket = io();
         this.players = {};
@@ -73,7 +77,7 @@ class MainScene extends Phaser.Scene {
             
         this.graphics = this.add.graphics();
 
-        this.graphics.fillStyle(0x0000ff);
+        this.graphics.fillStyle(this.chosenColor);
 
         this.matter.world.setBounds(0, 0, window.innerWidth, window.innerHeight);
 
@@ -104,7 +108,7 @@ class MainScene extends Phaser.Scene {
 
         for (let playerID in this.players) {
             let player = this.players[playerID];
-            this.graphics.fillStyle(0x0000ff);
+            this.graphics.fillStyle(this.chosenColor);
             this.graphics.fillCircle(player.position.x, player.position.y, 30);
         }
         
