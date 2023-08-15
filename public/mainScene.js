@@ -60,7 +60,7 @@ class MainScene extends Phaser.Scene {
     }
 
     onPlayerMoved(playerData) {
-        this.playerManager.movePlayer(playerData.Id, playerData.x, playerData.y);
+        this.playerManager.movePlayer(playerData.Id, playerData.movementData);
     }
 
     onUserDisconnect(playerId) {
@@ -76,9 +76,9 @@ class MainScene extends Phaser.Scene {
         const pointer = this.input.activePointer;
         this.playerManager.swervePlayer(this.socket.id, pointer.x, pointer.y);
 
-        const playerPosition = this.playerManager.getPlayerPosition(this.socket.id);
+        const playerMovementData = this.playerManager.getPlayerMovementData(this.socket.id);
 
-        this.socket.emit("playerMovement", playerPosition);
+        this.socket.emit("playerMovement", playerMovementData);
     }
 
     const allPlayerPositions = this.playerManager.getAllPlayerPositions();

@@ -20,7 +20,9 @@ io.on('connection', (socket) => {
 
     players[socket.id] = {
         x: 400,
-        y: 300
+        y: 300,
+        velocityX: 0,
+        velocityY: 0
     };
 
     socket.emit('currentPlayers', players);
@@ -29,7 +31,17 @@ io.on('connection', (socket) => {
     socket.on('playerMovement', (movementData) => {
         players[socket.id].x = movementData.x;
         players[socket.id].y = movementData.y;
-        socket.broadcast.emit('playerMoved', {Id: socket.id, x: players[socket.id].x, y: players[socket.id].y});
+        players[socket.id].velocityX = movementData.velocityX;
+        players[socket.id].velocityY = movementData.velocityY;
+        socket.broadcast.emit('playerMoved', {
+            Id: socket.id,
+            movementData: {
+                x: players[socket.id].x, 
+                y: players[socket.id].y,
+                velocityX: players[socket.id].velocityX,
+                velocityY: players[socket.id].velocityY
+            }
+        });
     });
 
     socket.on('disconnect', () => {

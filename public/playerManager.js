@@ -12,22 +12,27 @@ class PlayerManager {
       });
   }
 
-  movePlayer(id, x, y) {
+  movePlayer(id, movementData) {
       if (this.players[id]) {
-          this.players[id].position.x = x;
-          this.players[id].position.y = y;
+          this.players[id].position.x = movementData.x;
+          this.players[id].position.y = movementData.y;
+          this.scene.matter.body.setVelocity(this.players[id], {x: movementData.velocityX, y: movementData.velocityY});
       }
   }
 
   removePlayer(id) {
       if (this.players[id]) {
-          //this.players[id].destroy();
           delete this.players[id];
       }
   }
 
-  getPlayerPosition(id) {
-      return {x: this.players[id].position.x, y: this.players[id].position.y};
+  getPlayerMovementData(id) {
+      return {
+        x: this.players[id].position.x,
+        y: this.players[id].position.y,
+        velocityX: this.players[id].velocity.x,
+        velocityY: this.players[id].velocity.y
+    };
   }
 
   getAllPlayerPositions() {
@@ -42,6 +47,7 @@ class PlayerManager {
   swervePlayer(id, x, y) {
       const target = new Phaser.Math.Vector2(x, y);
       let velocity = target.subtract(new Phaser.Math.Vector2(this.players[id].position.x, this.players[id].position.y));
+      console.log("velocity: " + velocity)
       const maxVelocity = velocity.normalize().scale(150);
       if (velocity.length() > maxVelocity.length()) {
           velocity = maxVelocity;
