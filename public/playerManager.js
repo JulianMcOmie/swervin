@@ -44,18 +44,29 @@ class PlayerManager {
   }
 
   // Accelerates a player towards (x, y) (i.e. the cursor)
-  swervePlayer(id, x, y) {
-      const target = new Phaser.Math.Vector2(x, y);
-      let velocity = target.subtract(new Phaser.Math.Vector2(this.players[id].position.x, this.players[id].position.y));
-      console.log("velocity: " + velocity)
-      const maxVelocity = velocity.normalize().scale(150);
-      if (velocity.length() > maxVelocity.length()) {
-          velocity = maxVelocity;
-      }
+  swervePlayer(id, x, y, delta) {
+    const target = new Phaser.Math.Vector2(x, y);
+    console.log("mouseX: " + x + "\nmouseY: " + y);
+    let velocity = target.clone().subtract(new Phaser.Math.Vector2(this.players[id].position.x, this.players[id].position.y));
+    console.log("target.x: " + target.x + "\ntarget.y: " + target.y + "\nvelocity.x: " + velocity.x + "\nvelocity.y: " + velocity.y);
+    const unitVector = velocity.clone().normalize();
+    
+    const maxVelocity = velocity.clone().normalize().scale(25000 * (delta / 1000));  // Adjusted for delta time
+    if (velocity.length() > maxVelocity.length()) {
+        velocity = maxVelocity;
+    }
 
-      let forceMagnitude = 0.0019;
-      let force = { x: velocity.x * forceMagnitude, y: velocity.y * forceMagnitude };
-  
-      this.scene.matter.body.applyForce(this.players[id], this.players[id].position, force);
-  }
+    const minVelocity = velocity.clone().normalize().scale(2500 * (delta / 1000));
+    console.log("velocity.length(): " + velocity.length() + "\nminVelocity.length(): " + minVelocity.length());
+    if (velocity.length() < minVelocity.length()) {
+        velocity = new Phaser.Math.Vector2(0, 0);
+        console.log("Too Slow");
+    }
+
+    let forceMagnitude = .1 * (delta / 1000);  // Adjusted for delta time
+    let force = { x: velocity.x * forceMagnitude, y: velocity.y * forceMagnitude };
+
+    this.scene.matter.body.applyForce(this.players[id], this.players[id].position, force);
+}
+
 }

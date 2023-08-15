@@ -68,13 +68,14 @@ class MainScene extends Phaser.Scene {
         this.playerManager.removePlayer(playerId);
     }
 
-    update() {
+    update(time, delta) {
 
+    //console.log(delta);
     if (this.socket && this.socket.id) {
         this.graphics.clear();
 
         const pointer = this.input.activePointer;
-        this.playerManager.swervePlayer(this.socket.id, pointer.x, pointer.y);
+        this.playerManager.swervePlayer(this.socket.id, pointer.x, pointer.y, delta);
 
         const playerMovementData = this.playerManager.getPlayerMovementData(this.socket.id);
 
