@@ -27,21 +27,21 @@ class PlayerManager {
   }
 
   getPlayerPosition(id) {
-      return {x: this.players[id].position.x, y: this.players[id].position.y}
+      console.log(`Fetching position for player with id ${id}.`);
+      return {x: this.players[id].position.x, y: this.players[id].position.y};
   }
 
   getAllPlayerPositions() {
-      var allPlayerPositions = []
+      var allPlayerPositions = [];
       for (let playerID in this.players) {
-        allPlayerPositions.push({x: this.players[playerID].x, y: this.players[playerID].y});
+        allPlayerPositions.push({x: this.players[playerID].position.x, y: this.players[playerID].position.y});
       }
       return allPlayerPositions;
   }
 
   // Accelerates a player towards (x, y) (i.e. the cursor)
   swervePlayer(id, x, y) {
-      const target = new Phaser.Math.Vector2(x,   y);
-            
+      const target = new Phaser.Math.Vector2(x, y);
       let velocity = target.subtract(new Phaser.Math.Vector2(this.players[id].position.x, this.players[id].position.y));
       const maxVelocity = velocity.normalize().scale(150);
       if (velocity.length() > maxVelocity.length()) {
