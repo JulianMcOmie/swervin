@@ -5,7 +5,13 @@ class PlayerManager {
   }
 
   addPlayer(id) {
-      this.players[id] = SwerverFactory.createBully(this.scene);
+    const val = Math.random();
+    if (val < 0.5) {
+        this.players[id] = SwerverFactory.createBully(this.scene);
+    } else {
+        this.players[id] = SwerverFactory.createRacer(this.scene);
+    }
+    
   }
 
   movePlayer(id, movementData) {

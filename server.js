@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
     };
 
     socket.emit('currentPlayers', players);
-    socket.broadcast.emit('newPlayer', {Id: socket.id, x: players[socket.id].x, y: players[socket.id].y});
+    socket.broadcast.emit('newPlayer', {Id: socket.id});
 
     socket.on('playerMovement', (movementData) => {
         players[socket.id].x = movementData.x;

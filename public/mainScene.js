@@ -42,7 +42,7 @@ class MainScene extends Phaser.Scene {
     onConnect() {
       console.log('Connected to the server');
       console.log('My socket id is: ', this.socket.id);
-      this.playerManager.addPlayer(this.socket.id, 300, 400);
+      this.playerManager.addPlayer(this.socket.id);
     }
 
     onCurrentPlayers(players) {
@@ -56,7 +56,7 @@ class MainScene extends Phaser.Scene {
     }
 
     onNewPlayer(playerData) {
-        this.playerManager.addPlayer(playerData.Id, playerData.x, playerData.y);
+        this.playerManager.addPlayer(playerData.Id);
     }
 
     onPlayerMoved(playerData) {
