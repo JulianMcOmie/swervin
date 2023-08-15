@@ -69,29 +69,34 @@ class MainScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        if (this.socket && this.socket.id) {
+            this.graphics.clear();
 
-    //console.log(delta);
-    if (this.socket && this.socket.id) {
-        this.graphics.clear();
+            const pointer = this.input.activePointer;
+            this.playerManager.swervePlayer(this.socket.id, pointer.x, pointer.y, delta);
 
-        const pointer = this.input.activePointer;
-        this.playerManager.swervePlayer(this.socket.id, pointer.x, pointer.y, delta);
+            const playerMovementData = this.playerManager.getPlayerMovementData(this.socket.id);
 
-        const playerMovementData = this.playerManager.getPlayerMovementData(this.socket.id);
+            this.socket.emit("playerMovement", playerMovementData);
+        }
 
-        this.socket.emit("playerMovement", playerMovementData);
-    }
+        const allPlayerRenderData = this.playerManager.getAllPlayerRenderData();
 
-    const allPlayerPositions = this.playerManager.getAllPlayerPositions();
-    for (let playerId in allPlayerPositions) {
-        const position = allPlayerPositions[playerId];
-        
-        this.graphics.fillStyle(0x0000ff);
-        this.graphics.fillCircle(position.x, position.y, 30);
-    }
+for (let playerId in allPlayerRenderData) {
+    const renderData = allPlayerRenderData[playerId];
+
+    // Logging individual attributes for the player
+    console.log(`Player ID: ${playerId}`);
+    console.log(`Color: ${renderData.color}`);
+    console.log(`X position: ${renderData.x}`);
+    console.log(`Y position: ${renderData.y}`);
+    console.log(`Radius: ${renderData.radius}`);
+
+    this.graphics.fillStyle(renderData.color);
+    this.graphics.fillCircle(renderData.x, renderData.y, renderData.radius);
 }
 
-    
+    }  
 }
 
 window.MainScene = MainScene;

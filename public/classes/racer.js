@@ -1,3 +1,0 @@
-class Racer extends Swerver {
-    
-}
