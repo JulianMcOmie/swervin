@@ -21,13 +21,12 @@ class PlayerManager {
 
   removePlayer(id) {
       if (this.players[id]) {
-          this.players[id].destroy();
+          //this.players[id].destroy();
           delete this.players[id];
       }
   }
 
   getPlayerPosition(id) {
-      console.log(`Fetching position for player with id ${id}.`);
       return {x: this.players[id].position.x, y: this.players[id].position.y};
   }
 
