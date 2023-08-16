@@ -1,12 +1,7 @@
 import Phaser from 'phaser';
-import PlayerManager, { MovementData, RenderData } from './playerManager';
+import PlayerManager, { MovementData, RenderData, PlayerData } from './playerManager';
 import { Socket, io } from 'socket.io-client';
-import { SwerverRenderer } from './classes/swerverType';
-
-interface PlayerData {
-  id: string;
-  movementData: MovementData;
-}
+import SwerverType, { SwerverRenderer } from './classes/swerverType';
 
 class MainScene extends Phaser.Scene {
     playerManager: PlayerManager;
@@ -28,11 +23,11 @@ class MainScene extends Phaser.Scene {
     }
 
     setEventListeners(): void {
-      this.socket?.on('connect', () => this.onConnect());
-      this.socket?.on('currentPlayers', (players: Record<string, PlayerData>) => this.onCurrentPlayers(players));
-      this.socket?.on('newPlayer', (playerData: PlayerData) => this.onNewPlayer(playerData));
-      this.socket?.on('playerMoved', (playerData: PlayerData) => this.onPlayerMoved(playerData));
-      this.socket?.on('userDisconnect', (playerId: string) => this.onUserDisconnect(playerId));
+        this.socket?.on('connect', () => this.onConnect());
+        this.socket?.on('currentPlayers', (players: Record<string, PlayerData>) => this.onCurrentPlayers(players));
+        this.socket?.on('newPlayer', (id: string) => this.onNewPlayer(id));
+        this.socket?.on('playerMoved', (id: string, movementData: MovementData) => this.onPlayerMoved(id, movementData));
+        this.socket?.on('userDisconnect', (playerId: string) => this.onUserDisconnect(playerId));
     }
 
     initFullScreen(): void {
@@ -54,27 +49,24 @@ class MainScene extends Phaser.Scene {
     }
 
     onConnect(): void {
-      console.log('Connected to the server');
-      console.log('My socket id is: ', this.socket?.id);
-      this.playerManager.addPlayer(this.socket?.id || '');
+        console.log('Connected to the server');
+        console.log('My socket id is: ', this.socket?.id);
+        const val = Math.random();
+        this.playerManager.addNewPlayer(this.socket?.id || '');
     }
 
     onCurrentPlayers(players: Record<string, PlayerData>): void {
-        Object.keys(players).forEach(id => {
-            if (id === this.socket?.id) {
-                this.playerManager.addPlayer(id);
-            } else {
-                this.playerManager.addPlayer(id);
-            }
-        });
+        for (let playerID in players) {
+            this.playerManager.addPlayer(playerID, players[playerID]);
+        }
     }
 
-    onNewPlayer(playerData: PlayerData): void {
-        this.playerManager.addPlayer(playerData.id);
+    onNewPlayer(id: string): void {
+        this.playerManager.addNewPlayer(id)
     }
 
-    onPlayerMoved(playerData: PlayerData): void {
-        this.playerManager.movePlayer(playerData.id, playerData.movementData);
+    onPlayerMoved(id: string, movementData: MovementData): void {
+        this.playerManager.movePlayer(id, movementData);
     }
 
     onUserDisconnect(playerId: string): void {

@@ -38,10 +38,10 @@ io.on('connection', (socket) => {
         y: 300,
         velocityX: 0,
         velocityY: 0
-    };
+    }
 
     socket.emit('currentPlayers', players);
-    socket.broadcast.emit('newPlayer', {Id: socket.id});
+    socket.broadcast.emit('newPlayer', socket.id);
 
     socket.on('playerMovement', (movementData) => {
         players[socket.id] = movementData
