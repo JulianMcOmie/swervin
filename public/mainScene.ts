@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import PlayerManager, { MovementData, RenderData } from './playerManager';
 import { Socket, io } from 'socket.io-client';
+import { SwerverRenderer } from './classes/swerverType';
 
 interface PlayerData {
   id: string;
@@ -97,18 +98,9 @@ class MainScene extends Phaser.Scene {
 
         for (let playerId in allPlayerRenderData) {
             const renderData = allPlayerRenderData[playerId];
-
-            // Logging individual attributes for the player
-            console.log(`Player ID: ${playerId}`);
-            console.log(`Color: ${renderData.color}`);
-            console.log(`X position: ${renderData.x}`);
-            console.log(`Y position: ${renderData.y}`);
-            console.log(`Radius: ${renderData.radius}`);
-
-            this.graphics?.fillStyle(renderData.color);
-            this.graphics?.fillCircle(renderData.x, renderData.y, renderData.radius);
+            SwerverRenderer.draw(this.graphics, renderData);
         }
-    }  
+    }
 }
 
 export default MainScene;
