@@ -1,5 +1,5 @@
 import { Scene } from 'phaser'; // Assuming you're using Phaser
-import Swerver from './swerver.js'; // Import Swerver class from swerver.js
+import Swerver from './swerver'; // Import Swerver class from swerver.js
 
 class SwerverFactory {
     static createRacer(scene: any): Swerver {
