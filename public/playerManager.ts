@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Swerver from './classes/swerver';
 import SwerverFactory from './classes/swerverFactory';
+import SwerverType from './classes/swerverType';
 
 export interface MovementData {
   x: number;
@@ -12,8 +13,7 @@ export interface MovementData {
 export interface RenderData {
   x: number;
   y: number;
-  color: number;
-  radius: number;
+  swerverType: SwerverType
 }
 
 class PlayerManager {
@@ -26,12 +26,13 @@ class PlayerManager {
   }
 
   addPlayer(id: string): void {
-    const val = Math.random();
-    if (val < 0.5) {
-      this.players[id] = SwerverFactory.createBully(this.scene);
-    } else {
-      this.players[id] = SwerverFactory.createRacer(this.scene);
-    }
+        const val = Math.random();
+        var type = SwerverType.Racer;
+        if (val < 0.5) {
+            type = SwerverType.Bully;
+        }
+
+        this.players[id] = SwerverFactory.createSwerver(this.scene, type);
   }
 
   movePlayer(id: string, movementData: MovementData): void {
@@ -59,12 +60,11 @@ class PlayerManager {
 
   getAllPlayerRenderData(): RenderData[] {
     const allPlayerRenderData: RenderData[] = [];
-    for (let playerID in this.players) {
+    for (const playerID in this.players) {
       allPlayerRenderData.push({
           x: this.players[playerID].body.position.x,
           y: this.players[playerID].body.position.y,
-          color: this.players[playerID].color,
-          radius: this.players[playerID].radius
+          swerverType: this.players[playerID].type
       });
     }
     return allPlayerRenderData;
@@ -86,8 +86,8 @@ class PlayerManager {
         velocity = new Phaser.Math.Vector2(0, 0);
     }
 
-    let forceMagnitude = .1 * (delta / 1000);  // Adjusted for delta time
-    let force = { x: velocity.x * forceMagnitude, y: velocity.y * forceMagnitude };
+    const forceMagnitude = .1 * (delta / 1000);  // Adjusted for delta time
+    const force = { x: velocity.x * forceMagnitude, y: velocity.y * forceMagnitude };
 
     this.scene.matter.body.applyForce(this.players[id].body, this.players[id].body.position, force);
   }

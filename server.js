@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
+const { SocketAddress } = require('net');
 
 const app = express();
 const server = http.createServer(app);
@@ -43,18 +44,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newPlayer', {Id: socket.id});
 
     socket.on('playerMovement', (movementData) => {
-        players[socket.id].x = movementData.x;
-        players[socket.id].y = movementData.y;
-        players[socket.id].velocityX = movementData.velocityX;
-        players[socket.id].velocityY = movementData.velocityY;
+        players[socket.id] = movementData
         socket.broadcast.emit('playerMoved', {
             Id: socket.id,
-            movementData: {
-                x: players[socket.id].x, 
-                y: players[socket.id].y,
-                velocityX: players[socket.id].velocityX,
-                velocityY: players[socket.id].velocityY
-            }
+            movementData: players[socket.id]
         });
     });
 
