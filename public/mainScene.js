@@ -1,3 +1,7 @@
+import Phaser from 'phaser';
+import PlayerManager from './playerManager';
+import io from 'socket.io-client';
+
 class MainScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MainScene' });
@@ -100,3 +104,5 @@ for (let playerId in allPlayerRenderData) {
 }
 
 window.MainScene = MainScene;
+
+export default MainScene;

@@ -1,3 +1,6 @@
+import Phaser from 'phaser';
+import SwerverFactory from './classes/swerverFactory';
+
 class PlayerManager {
   constructor(scene) {
       this.scene = scene;
@@ -73,3 +76,5 @@ class PlayerManager {
 }
 
 }
+
+export default PlayerManager;

@@ -20,3 +20,5 @@ class MenuScene extends Phaser.Scene {
       this.scene.start('MainScene', { color: color });
   }
 }
+
+export default MenuScene;

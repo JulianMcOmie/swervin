@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 class Swerver {
     constructor(scene, radius, color) {
         this.body = scene.matter.add.circle(300, 400, radius, {
@@ -9,3 +11,5 @@ class Swerver {
         this.radius = radius
     }
 }
+
+export default Swerver;

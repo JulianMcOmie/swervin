@@ -10,10 +10,24 @@ const io = socketIO(server);
 let players = {};
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/dist', express.static(path.join(__dirname, 'dist')));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 })
+
+// BAD (probably)
+app.get('/dist/bundle.js', (req, res) => {
+  fs.readFile(path.join(__dirname, 'dist', 'bundle.js'), (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).end();
+    } else {
+      res.setHeader('Content-Type', 'application/javascript');
+      res.end(data);
+    }
+  });
+});
 
 io.on('connection', (socket) => {
     console.log('A user connected');
