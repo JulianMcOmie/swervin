@@ -2,17 +2,17 @@ import Phaser from 'phaser';
 import Swerver from './classes/swerver';
 import SwerverFactory from './classes/swerverFactory';
 
-interface MovementData {
+export interface MovementData {
   x: number;
   y: number;
   velocityX: number;
   velocityY: number;
 }
 
-interface PlayerData {
+export interface RenderData {
   x: number;
   y: number;
-  color: string;
+  color: number;
   radius: number;
 }
 
@@ -57,8 +57,8 @@ class PlayerManager {
     };
   }
 
-  getAllPlayerRenderData(): PlayerData[] {
-    const allPlayerRenderData: PlayerData[] = [];
+  getAllPlayerRenderData(): RenderData[] {
+    const allPlayerRenderData: RenderData[] = [];
     for (let playerID in this.players) {
       allPlayerRenderData.push({
           x: this.players[playerID].body.position.x,
