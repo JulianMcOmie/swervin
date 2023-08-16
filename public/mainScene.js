@@ -51,11 +51,7 @@ class MainScene extends Phaser.Scene {
 
     onCurrentPlayers(players) {
         Object.keys(players).forEach(id => {
-            if (id === this.socket.id) {
-                this.playerManager.addPlayer(id, players[id].x, players[id].y);
-            } else {
-                this.playerManager.addPlayer(id, players[id].x, players[id].y);
-            }
+            this.playerManager.addPlayer(id, players[id].x, players[id].y);
         });
     }
 
