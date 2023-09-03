@@ -3,10 +3,12 @@ const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
 const { SocketAddress } = require('net');
+const { SwerverType } = require('./public/classes/swerverType');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+
 
 let players = {};
 
